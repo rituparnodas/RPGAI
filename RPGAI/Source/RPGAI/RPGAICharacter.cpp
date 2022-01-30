@@ -76,7 +76,6 @@ void ARPGAICharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInp
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ARPGAICharacter::OnResetVR);
 }
 
-
 void ARPGAICharacter::OnResetVR()
 {
 	// If RPGAI is added to a project via 'Add Feature' in the Unreal Editor the dependency on HeadMountedDisplay in RPGAI.Build.cs is not automatically propagated
@@ -137,4 +136,14 @@ void ARPGAICharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+bool ARPGAICharacter::GetIsAlive_Implementation()
+{
+	return Health > 0.f;
+}
+
+bool ARPGAICharacter::GetIsPlayer_Implementation()
+{
+	return true;
 }

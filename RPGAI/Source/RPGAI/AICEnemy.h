@@ -18,6 +18,9 @@ public:
 
 	class AAICharacter* EnemyAI = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FName EnemyTargetKey;
+
 protected:
 
 	AAICEnemy();
@@ -29,4 +32,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		class UAIPerceptionComponent* AIPerceptioncomp = nullptr;
 
+	void UpdatePerception();
+
+	FTimerHandle Handle_UpdatePerception;
+
+	AAICharacter* AIPawn = nullptr;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class UAISense> AISense;
+
+	AActor* Target = nullptr;
 };

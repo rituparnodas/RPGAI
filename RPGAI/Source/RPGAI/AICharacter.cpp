@@ -8,3 +8,13 @@ void AAICharacter::BeginPlay()
 {
 	Super::BeginPlay();
 }
+
+bool AAICharacter::GetIsAlive_Implementation()
+{
+	return Health > 0.f;
+}
+
+bool AAICharacter::GetIsPlayer_Implementation()
+{
+	return false;
+}

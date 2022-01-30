@@ -23,4 +23,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AISetup")
 		float Mana;
+
+	bool GetIsAlive_Implementation();
+	bool GetIsPlayer_Implementation();
 };

@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AIHelper.h"
 #include "RPGAICharacter.generated.h"
 
 UCLASS(config=Game)
-class ARPGAICharacter : public ACharacter
+class ARPGAICharacter : public ACharacter, public IAIHelper
 {
 	GENERATED_BODY()
 
@@ -72,5 +73,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float Health;
 
+	virtual bool GetIsAlive_Implementation() override;
+	virtual bool GetIsPlayer_Implementation() override;
 };
 
