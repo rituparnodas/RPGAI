@@ -28,4 +28,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		bool GetIsPlayer();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void GetAttackRange(float& MaxRange, float& MinRange);
 };

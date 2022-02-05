@@ -26,4 +26,7 @@ public:
 
 	bool GetIsAlive_Implementation();
 	bool GetIsPlayer_Implementation();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	class AActor* PatrolRoute = nullptr;
 };
