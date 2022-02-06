@@ -3,6 +3,7 @@
 
 #include "AICharacter.h"
 #include "BehaviorTree/BehaviorTree.h"
+#include "AbilityBase.h"
 
 void AAICharacter::BeginPlay()
 {
@@ -23,4 +24,19 @@ float AAICharacter::GetHealth_Implementation(float& MaxHealth)
 {
 	MaxHealth = MaximumHealth;
 	return Health;
+}
+
+void AAICharacter::ActivateAbility(TSubclassOf<class AAbilityBase> AbilityClass)
+{
+	CurrentAbilityClassToActivate = AbilityClass;
+	OnAbilityCastStarted.Broadcast();
+
+	
+}
+
+void AAICharacter::AbilityActivated()
+{
+	OnAbilityCastEnded.Broadcast();
+
+	//AAbilityBase* AbilityClass = GetWorld()->SpawnActor<AAbilityBase>(CurrentAbilityClassToActivate, )
 }
