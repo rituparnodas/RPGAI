@@ -24,8 +24,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AISetup")
 		float Mana;
 
-	bool GetIsAlive_Implementation();
-	bool GetIsPlayer_Implementation();
+	virtual bool GetIsAlive_Implementation() override;
+	virtual bool GetIsPlayer_Implementation() override;
+	virtual float GetHealth_Implementation(float& MaxHealth) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	class AActor* PatrolRoute = nullptr;

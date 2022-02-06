@@ -71,7 +71,10 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float Health;
+		float Health = 75.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		float MaximumHealth = 100.f;
 
 	virtual bool GetIsAlive_Implementation() override;
 	virtual bool GetIsPlayer_Implementation() override;

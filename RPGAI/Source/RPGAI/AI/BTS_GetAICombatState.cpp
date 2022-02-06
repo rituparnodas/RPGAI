@@ -32,6 +32,7 @@ void UBTS_GetAICombatState::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* N
 					float CurrentDistance = AIChar->GetDistanceTo(Actor);
 					float MaxRange, MinRange;
 					IAIHelper::Execute_GetAttackRange(AIChar, MaxRange, MinRange);
+					UE_LOG(LogTemp, Warning, TEXT("Min Range : %f, MaxRange : %f"), MinRange, MaxRange);
 					if (CurrentDistance > MaxRange)
 					{
 						BlackboardComp->SetValueAsEnum(CombatStateKey.SelectedKeyName, ECombatState::OUT_OF_RANGE);

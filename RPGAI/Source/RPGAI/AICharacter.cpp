@@ -18,3 +18,9 @@ bool AAICharacter::GetIsPlayer_Implementation()
 {
 	return false;
 }
+
+float AAICharacter::GetHealth_Implementation(float& MaxHealth)
+{
+	MaxHealth = MaximumHealth;
+	return Health;
+}

@@ -31,4 +31,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void GetAttackRange(float& MaxRange, float& MinRange);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		float GetHealth(float& MaxHealth);
 };
