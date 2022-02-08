@@ -30,7 +30,10 @@ void AAICharacter::ActivateAbility(TSubclassOf<class AAbilityBase> AbilityClass)
 {
 	CurrentAbilityClassToActivate = AbilityClass;
 	OnAbilityCastStarted.Broadcast();
-
+	
+	float Delay = AbilityClass.GetDefaultObject()->CastTime * CastSpeed;
+	FTimerHandle Handle_AbilityActivated;
+	GetWorld()->GetTimerManager().SetTimer(Handle_AbilityActivated, this, &AAICharacter::AbilityActivated, Delay);
 	
 }
 
@@ -39,4 +42,13 @@ void AAICharacter::AbilityActivated()
 	OnAbilityCastEnded.Broadcast();
 
 	//AAbilityBase* AbilityClass = GetWorld()->SpawnActor<AAbilityBase>(CurrentAbilityClassToActivate, )
+}
+
+float AAICharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	OnAbilityCastInterrupt.Broadcast();
+
+	return DamageAmount;
 }

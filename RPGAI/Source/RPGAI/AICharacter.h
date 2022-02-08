@@ -37,7 +37,7 @@ public:
 	class AActor* PatrolRoute = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<AAbilityBase> CurrentAbilityClassToActivate;
+	TSubclassOf<class AAbilityBase> CurrentAbilityClassToActivate;
 
 	void ActivateAbility(TSubclassOf<class AAbilityBase> AbilityClass);
 	void AbilityActivated();
@@ -53,4 +53,6 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 		FOnAbilityCastInterrupt OnAbilityCastInterrupt;
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 };
