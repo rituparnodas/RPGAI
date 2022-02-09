@@ -34,4 +34,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		float GetHealth(float& MaxHealth);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		bool GetIsCurrentlyInterrupted();
 };

@@ -26,7 +26,12 @@ float AAICharacter::GetHealth_Implementation(float& MaxHealth)
 	return Health;
 }
 
-void AAICharacter::ActivateAbility(TSubclassOf<class AAbilityBase> AbilityClass)
+bool AAICharacter::GetIsCurrentlyInterrupted_Implementation()
+{
+	return IsInterrupt;
+}
+
+void AAICharacter::ActivateAbility(TSubclassOf<AAbilityBase> AbilityClass)
 {
 	CurrentAbilityClassToActivate = AbilityClass;
 	OnAbilityCastStarted.Broadcast();
@@ -44,11 +49,18 @@ void AAICharacter::AbilityActivated()
 	//AAbilityBase* AbilityClass = GetWorld()->SpawnActor<AAbilityBase>(CurrentAbilityClassToActivate, )
 }
 
+void AAICharacter::CancelAbilityActivation()
+{
+}
+
 float AAICharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
 {
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
+	IsInterrupt = true;
 	OnAbilityCastInterrupt.Broadcast();
+	FTimerHandle Handle_Interrupt;
+	GetWorld()->GetTimerManager().SetTimer(Handle_Interrupt, this, &AAICharacter::SetUnInterrupted, 1.f);
 
 	return DamageAmount;
 }

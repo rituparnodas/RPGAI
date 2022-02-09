@@ -14,4 +14,21 @@ class RPGAI_API UBTT_ActivateAbility : public UBTTaskNode
 {
 	GENERATED_BODY()
 	
+public:
+
+	UBTT_ActivateAbility();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class AAbilityBase> AbilityClass;
+
+	void AbilityCastStarted();
+	void AbilityCastInterrupted();
+	void AbilityCastEnded();
+
+protected:
+
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+	virtual EBTNodeResult::Type AbortTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+
+	EBTNodeResult::Type CurrentResult = EBTNodeResult::Type::Succeeded;
 };

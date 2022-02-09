@@ -31,6 +31,7 @@ public:
 
 	virtual bool GetIsAlive_Implementation() override;
 	virtual bool GetIsPlayer_Implementation() override;
+	virtual bool GetIsCurrentlyInterrupted_Implementation() override;
 	virtual float GetHealth_Implementation(float& MaxHealth) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -41,6 +42,7 @@ public:
 
 	void ActivateAbility(TSubclassOf<class AAbilityBase> AbilityClass);
 	void AbilityActivated();
+	void CancelAbilityActivation();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilitySetup")
 		float CastSpeed = 1.f;
@@ -53,6 +55,11 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 		FOnAbilityCastInterrupt OnAbilityCastInterrupt;
+
+	UPROPERTY(BlueprintReadWrite)
+		bool IsInterrupt;
+
+	void SetUnInterrupted() { IsInterrupt = false; }
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 };

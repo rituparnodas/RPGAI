@@ -17,35 +17,42 @@ void UBTS_GetAICombatState::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* N
 	{
 		AAICharacter* AIChar = Cast<AAICharacter>(AIC->GetPawn());
 		if (AIChar != nullptr)
-		{
+		{			
 			UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 			if (BlackboardComp != nullptr)
 			{
-				AActor* Actor = Cast<AActor>(BlackboardComp->GetValueAsObject(TargetKey.SelectedKeyName));
-				if (!Actor)
+				if (IAIHelper::Execute_GetIsCurrentlyInterrupted(AIChar))
 				{
-					ECombatState CombatState = AIChar->PatrolRoute ? ECombatState::PATROL : ECombatState::IDLE;
-					BlackboardComp->SetValueAsEnum(CombatStateKey.SelectedKeyName, CombatState);
+					BlackboardComp->SetValueAsEnum(CombatStateKey.SelectedKeyName, ECombatState::INTERRUPTED);
 				}
 				else
 				{
-					float CurrentDistance = AIChar->GetDistanceTo(Actor);
-					float MaxRange, MinRange;
-					IAIHelper::Execute_GetAttackRange(AIChar, MaxRange, MinRange);
-					UE_LOG(LogTemp, Warning, TEXT("Min Range : %f, MaxRange : %f"), MinRange, MaxRange);
-					if (CurrentDistance > MaxRange)
+					AActor* Actor = Cast<AActor>(BlackboardComp->GetValueAsObject(TargetKey.SelectedKeyName));
+					if (!Actor)
 					{
-						BlackboardComp->SetValueAsEnum(CombatStateKey.SelectedKeyName, ECombatState::OUT_OF_RANGE);
+						ECombatState CombatState = AIChar->PatrolRoute ? ECombatState::PATROL : ECombatState::IDLE;
+						BlackboardComp->SetValueAsEnum(CombatStateKey.SelectedKeyName, CombatState);
 					}
 					else
 					{
-						if (CurrentDistance > MinRange)
+						float CurrentDistance = AIChar->GetDistanceTo(Actor);
+						float MaxRange, MinRange;
+						IAIHelper::Execute_GetAttackRange(AIChar, MaxRange, MinRange);
+						UE_LOG(LogTemp, Warning, TEXT("Min Range : %f, MaxRange : %f"), MinRange, MaxRange);
+						if (CurrentDistance > MaxRange)
 						{
-							BlackboardComp->SetValueAsEnum(CombatStateKey.SelectedKeyName, ECombatState::RANGED_ATTACK);
+							BlackboardComp->SetValueAsEnum(CombatStateKey.SelectedKeyName, ECombatState::OUT_OF_RANGE);
 						}
 						else
 						{
-							BlackboardComp->SetValueAsEnum(CombatStateKey.SelectedKeyName, ECombatState::MEEL_ATTACK);
+							if (CurrentDistance > MinRange)
+							{
+								BlackboardComp->SetValueAsEnum(CombatStateKey.SelectedKeyName, ECombatState::RANGED_ATTACK);
+							}
+							else
+							{
+								BlackboardComp->SetValueAsEnum(CombatStateKey.SelectedKeyName, ECombatState::MEEL_ATTACK);
+							}
 						}
 					}
 				}
