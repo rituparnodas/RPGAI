@@ -40,7 +40,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class AAbilityBase> CurrentAbilityClassToActivate;
 
-	void ActivateAbility(TSubclassOf<class AAbilityBase> AbilityClass);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		AActor* CurrentTargetForAbility = nullptr;
+
+	void ActivateAbility(TSubclassOf<class AAbilityBase> AbilityClass, AActor* Target);
 	void AbilityActivated();
 	void CancelAbilityActivation();
 

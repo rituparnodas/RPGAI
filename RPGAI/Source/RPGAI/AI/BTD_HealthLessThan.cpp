@@ -26,5 +26,5 @@ bool UBTD_HealthLessThan::CalculateRawConditionValue(UBehaviorTreeComponent& Own
 	float MaximumHealth; 
 	float Health = IAIHelper::Execute_GetHealth(AIPawn, MaximumHealth);
 
-	return (((int32)Health % (int32)MaximumHealth) * 100.f) < HealthThreshold;
+	return (((int32)Health / (int32)MaximumHealth) * 100.f) < HealthThreshold;
 }

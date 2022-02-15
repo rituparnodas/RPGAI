@@ -35,4 +35,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float CastTime = 4.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		AActor* AITarget = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float DelayedStartTime = 0.f;
 };

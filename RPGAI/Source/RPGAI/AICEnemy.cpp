@@ -14,8 +14,6 @@
 AAICEnemy::AAICEnemy()
 {
 	AIPerceptioncomp = CreateDefaultSubobject<UAIPerceptionComponent>(FName("AIPerceptioncomp"));
-
-	AIPerceptioncomp->SetDominantSense(UAISense_Sight::StaticClass());
 }
 
 void AAICEnemy::BeginPlay()

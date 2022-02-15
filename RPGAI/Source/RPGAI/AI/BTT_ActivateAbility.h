@@ -21,8 +21,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class AAbilityBase> AbilityClass;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FBlackboardKeySelector TargetKey;
+
+	UFUNCTION()
 	void AbilityCastStarted();
+
+	UFUNCTION()
 	void AbilityCastInterrupted();
+
+	UFUNCTION()
 	void AbilityCastEnded();
 
 protected:

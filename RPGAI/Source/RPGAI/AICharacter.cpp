@@ -4,6 +4,7 @@
 #include "AICharacter.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "AbilityBase.h"
+#include "Kismet/GameplayStatics.h"
 
 void AAICharacter::BeginPlay()
 {
@@ -31,8 +32,9 @@ bool AAICharacter::GetIsCurrentlyInterrupted_Implementation()
 	return IsInterrupt;
 }
 
-void AAICharacter::ActivateAbility(TSubclassOf<AAbilityBase> AbilityClass)
+void AAICharacter::ActivateAbility(TSubclassOf<AAbilityBase> AbilityClass, AActor* Target)
 {
+	CurrentTargetForAbility = Target;
 	CurrentAbilityClassToActivate = AbilityClass;
 	OnAbilityCastStarted.Broadcast();
 	
@@ -46,7 +48,16 @@ void AAICharacter::AbilityActivated()
 {
 	OnAbilityCastEnded.Broadcast();
 
-	//AAbilityBase* AbilityClass = GetWorld()->SpawnActor<AAbilityBase>(CurrentAbilityClassToActivate, )
+	AAbilityBase* AbilityType = GetWorld()->SpawnActorDeferred<AAbilityBase>(CurrentAbilityClassToActivate, GetActorTransform(), this, this);
+	if (AbilityType)
+	{
+		AbilityType->AITarget = CurrentTargetForAbility;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("AbilityType Null"))
+	}
+	UGameplayStatics::FinishSpawningActor(AbilityType, GetActorTransform());
 }
 
 void AAICharacter::CancelAbilityActivation()
