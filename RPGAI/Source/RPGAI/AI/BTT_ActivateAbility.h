@@ -33,6 +33,8 @@ public:
 	UFUNCTION()
 	void AbilityCastEnded();
 
+	class UBehaviorTreeComponent* _OwnerComponent;
+
 protected:
 
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;

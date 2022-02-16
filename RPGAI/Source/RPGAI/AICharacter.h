@@ -37,10 +37,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	class AActor* PatrolRoute = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite)
 	TSubclassOf<class AAbilityBase> CurrentAbilityClassToActivate;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite)
 		AActor* CurrentTargetForAbility = nullptr;
 
 	void ActivateAbility(TSubclassOf<class AAbilityBase> AbilityClass, AActor* Target);

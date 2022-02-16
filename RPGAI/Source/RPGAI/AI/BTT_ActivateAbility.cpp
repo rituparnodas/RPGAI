@@ -6,16 +6,21 @@
 #include "RPGAI/AICEnemy.h"
 #include "RPGAI/AbilityBase.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/BehaviorTreeComponent.h"
 
 UBTT_ActivateAbility::UBTT_ActivateAbility()
 {
 	NodeName = "Activate Ability";
 }
 
+bool bIsActive = true;
+
 // Need Controller And Pawn
 EBTNodeResult::Type UBTT_ActivateAbility::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
+
+	_OwnerComponent = &OwnerComp;
 
 	if (!OwnerComp.GetAIOwner()) return EBTNodeResult::Failed;
 
@@ -28,45 +33,38 @@ EBTNodeResult::Type UBTT_ActivateAbility::ExecuteTask(UBehaviorTreeComponent& Ow
 	UBlackboardComponent* BC = OwnerComp.GetBlackboardComponent();
 	if (!BC) return EBTNodeResult::Failed;
 
-	if (!AICharacter->OnAbilityCastStarted.IsBound() && !AICharacter->OnAbilityCastInterrupt.IsBound() && !AICharacter->OnAbilityCastEnded.IsBound())
-	{
-		AICharacter->OnAbilityCastStarted.AddDynamic(this, &UBTT_ActivateAbility::AbilityCastStarted);
-		AICharacter->OnAbilityCastInterrupt.AddDynamic(this, &UBTT_ActivateAbility::AbilityCastInterrupted);
-		AICharacter->OnAbilityCastEnded.AddDynamic(this, &UBTT_ActivateAbility::AbilityCastEnded);
-	}
-	
+	AICharacter->OnAbilityCastStarted.RemoveAll(this);
+	AICharacter->OnAbilityCastStarted.AddDynamic(this, &UBTT_ActivateAbility::AbilityCastStarted);
+
+	AICharacter->OnAbilityCastInterrupt.RemoveAll(this);
+	AICharacter->OnAbilityCastInterrupt.AddDynamic(this, &UBTT_ActivateAbility::AbilityCastInterrupted);
+
+	AICharacter->OnAbilityCastEnded.RemoveAll(this);
+	AICharacter->OnAbilityCastEnded.AddDynamic(this, &UBTT_ActivateAbility::AbilityCastEnded);
 
 	AActor* Target = Cast<AActor>(BC->GetValueAsObject(TargetKey.SelectedKeyName));
 	if (Target != nullptr)
 	{
 		AICharacter->ActivateAbility(AbilityClass, Target);
-	}
-	
-	if (CurrentResult == EBTNodeResult::Type::Succeeded || CurrentResult == EBTNodeResult::Type::Failed)
-	{
 		CurrentResult = EBTNodeResult::Type::InProgress;
-		UE_LOG(LogTemp, Warning, TEXT("InProgress"))
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Executing"))
-
-	return CurrentResult;
+	return EBTNodeResult::Type::InProgress;
 }
 
 void UBTT_ActivateAbility::AbilityCastStarted()
 {
-
 }
 
 void UBTT_ActivateAbility::AbilityCastInterrupted()
 {
-	CurrentResult = EBTNodeResult::Type::Succeeded;
+	FinishLatentTask(*_OwnerComponent, EBTNodeResult::Type::Succeeded);
 	UE_LOG(LogTemp, Warning, TEXT("AbilityCastInterrupted"))
 }
 
 void UBTT_ActivateAbility::AbilityCastEnded()
 {
-	CurrentResult = EBTNodeResult::Type::Failed;
+	FinishLatentTask(*_OwnerComponent, EBTNodeResult::Type::Succeeded);
 	UE_LOG(LogTemp, Warning, TEXT("AbilityCastEnded"))
 }
 
