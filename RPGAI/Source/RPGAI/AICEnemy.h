@@ -21,6 +21,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FName EnemyTargetKey;
 
+	AActor* EnemyTarget = nullptr;
+
 protected:
 
 	AAICEnemy();

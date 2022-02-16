@@ -70,6 +70,7 @@ void AAICEnemy::UpdatePerception()
 			if (GetBlackboardComponent())
 			{
 				GetBlackboardComponent()->SetValueAsObject(EnemyTargetKey, Target);
+				EnemyTarget = Target;
 			}
 		}
 	}
